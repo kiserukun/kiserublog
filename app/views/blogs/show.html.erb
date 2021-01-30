@@ -1,0 +1,60 @@
+<main class="main">
+  <div class="inner">
+    <div class="prototype__wrapper">
+    <div class="show_time">
+   <%= l @blog.created_at %>
+    <% if user_signed_in? && current_user.id == @blog.user_id %>
+   <% unless @blog.user.email == "test@example.com"%>
+    <div class="prototype__manage">
+          <%= link_to "編集する", edit_blog_path(@blog.id), method: :get, class: :prototype__btn %>
+          <%= link_to "削除する", blog_path(@blog.id),method: :delete, class: :prototype__btn %>
+        </div>
+         <% end %>
+        <% end %>
+   </div>
+      <p class="prototype__hedding">
+        <%= @blog.title %>
+        <hr class="title_border">
+      </p>
+      <%= link_to @blog.user.name, "/users/#{@blog.user.id}", class: :prototype__user %>
+      <div class="prototype__body">
+        <div class="prototype__detail">
+          <p class="detail__title"></p>
+          <p class="detail__message">
+            <%= safe_join(@blog.matter.split("\n"),tag(:br)) %>
+          </p>
+        </div>
+      </div>
+      <div class="prototype__image">
+        <%= image_tag @blog.image %>
+      </div>
+      <div class="prototype__comments">
+        <% if user_signed_in? %>
+           <%= form_with(model: [@blog, @comment], local: true) do |f|%>
+            <div class="field">
+               <%= f.label :text, "コメント" %><br />
+               <%= f.text_area :text ,size: "50x5"%>
+            </div>
+            <div class="actions">
+               <%= f.submit "送信する", class: :form__btn  %>
+            </div>
+           <% end %> 
+        <% end %>
+        <div class="comments_lists">
+            <div class="comments_list">
+            <% @comments.each do |comment| %>
+                <div class="comment_users">
+                  <%= link_to comment.user.name, "/users/#{comment.user_id}", class: :comment_user %>
+                 <div class="comment_user_time">
+                    <%= l comment.created_at %>
+                  </div>
+                  </div>
+                  <p class="comment_texts"> <%= comment.text %></p>
+               <% end %>
+              
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

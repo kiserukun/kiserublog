@@ -1,0 +1,23 @@
+<div class="main">
+  <div class="inner">
+ 
+      <h2 class="page-heading">
+        <%= @name %>
+      </h2>     
+         <div class="card__wrapper">
+       <% @blogs.each do |blog| %>
+       <div class="card">
+         <%= link_to blog_path(blog.id) do %>
+         <%= image_tag blog.image, class: "card__img" %>
+      <div class="card__body">
+         <%= link_to blog.title, blog_path(blog.id), class: :card__title%>
+         <%= l blog.created_at %>
+         <%= link_to blog.user.name, root_path,method: :get, class: :card__user %>
+        </div>
+       </div>
+       <% end %>
+      <% end %>
+    
+    </div>
+  </div>
+</div>
